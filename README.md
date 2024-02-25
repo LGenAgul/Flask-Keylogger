@@ -12,7 +12,9 @@ Logs keyboard input and clipboard data to separate files.
 Provides a real-time display of received data using a Flask web server.
 Identifies potential passwords based on regex patterns.
 Instructions:
+
 ################################
+
 1)Clone the repository.
 
 2)pip install -r requirements.txt.
@@ -22,7 +24,9 @@ Instructions:
 3)python keylogger.py.
 
 4)navigate through the /keyboard or /clipboard routes
+
 ################################
+
 Usage Warning:
 This project is intended for educational and informational purposes only. The use of keyloggers and clipboard monitors for malicious activities is illegal and unethical. Use this code responsibly in a test environment and in compliance with applicable laws and regulations.
 
