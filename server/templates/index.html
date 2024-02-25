@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Received Data</title>
+</head>
+<body>
+    
+    <div class="keyboard">
+    <h1>Received Data</h1>
+    <button><a href="/keyboard">keyboard logs</a></button>
+    <button><a href="/clipboard">clipboard logs</a></button>
+    <p>{{ received_data|safe }}</p>
+    <p>{{ received_clipboard|safe }}</p>
+    </div>
+
+</body>
+</html>
+
+<style>
+body
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: middle;
+    
+}
+button
+{
+    width: 10%;
+    
+}
+button a
+{
+    text-decoration: none;
+    color: black;
+}
+.keyboard
+{
+    
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: middle;
+}
+
+.password_text
+{
+color:red;
+font-weight: bolder;
+}
+
+</style>
